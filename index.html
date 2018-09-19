@@ -1,0 +1,79 @@
+<html>
+<head></head>
+<body>
+
+<h1 id="loading" style="margin: 100px;">Loading!</h1>
+
+<div id="reg" style="padding: 100px; width: 177px; display: inline-block; vertical-align: top; display: none;">
+    <h3>Registration</h3>
+    <form id="reg-form" onsubmit="return Register('reg-form');">
+        <label for="email">E-Mail:</label><br>
+        <input type="text" name="email" id="email">
+        <br>
+        <label for="name">Name:</label><br>
+        <input type="text" name="name" id="name">
+        <br>
+        <label for="password1">Password:</label><br>
+        <input type="password" name="password1" id="password1">
+        <br>
+        <label for="password2">Repeat password:</label><br>
+        <input type="password" name="password2" id="password2">
+        <br>
+        <br>
+        <input type="submit" value="Register">
+    </form>
+    <div id="reg-infobox" style="width: 177px;"></div>
+</div>
+
+<div id="login" style="padding: 100px; width: 177px; display: inline-block; vertical-align: top; display: none;">
+    <h3>Log in</h3>
+    <form id="login-form" onsubmit="return Login('login-form');">
+        <label for="email">E-Mail:</label><br>
+        <input type="text" name="email" id="login-email">
+        <br>
+        <label for="password">Password:</label><br>
+        <input type="password" name="password" id="password">
+        <br>
+        <br>
+        <input type="submit" value="Log in">
+    </form>
+    <div id="login-infobox" style="width: 177px;"></div>
+</div>
+
+<script src="js/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+<script src="js/functions.js"></script>
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) {
+        console.log( "ready!" );
+        var token = getCookie('token');
+        if(token.length > 0){
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "http://wi-back.com/app_dev.php/user/dashboard",
+                data: JSON.stringify({ token : token}),
+                success : function(data) {
+                    console.log( "success!" );
+                    window.location.href = '/dashboard.html';
+                },
+                error: function(data) {
+                    console.log( "error!" );
+                    $('#login').css('display', 'inline-block');
+                    $('#reg').css('display', 'inline-block');
+                    $('#loading').hide();
+                }
+            });
+        }else{
+            $('#login').css('display', 'inline-block');
+            $('#reg').css('display', 'inline-block');
+            $('#loading').hide();
+        }
+    });
+
+
+</script>
+
+
+</body>
+</html>

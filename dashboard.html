@@ -1,0 +1,61 @@
+<html>
+<head></head>
+<body>
+
+<h2 id="message" style="padding-top: 100px; padding-left: 100px; "></h2>
+<button id="log-out" style="margin-left: 100px; display: none;" onclick="LogOut();">Log Out</button>
+
+
+<script src="js/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+<script src="js/functions.js"></script>
+
+<script type="text/javascript">
+
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+        console.log( "ready!" );
+        var token = getCookie('token');
+        if(token.length > 0){
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "http://wi-back.com/app_dev.php/user/dashboard",
+                //data: { MyPost:132456 },
+                data: JSON.stringify({ token : token}),
+                success : function(data) {
+                    console.log( "success!" );
+                    $('#message').html('Hello '+data.name+'!');
+                    $('#log-out').show();
+                },
+                error: function(data) {
+                    console.log( "error!" );
+                    $('#message').html(data.responseJSON.errorText);
+                    setTimeout(function(){ window.location.href = '/'; }, 2000);
+                }
+            });
+        }else{
+            $('#message').html('Please log in first!');
+            setTimeout(function(){ window.location.href = '/'; }, 2000);
+        }
+
+    });
+   /* $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "http://wi-back.com/app_dev.php/user/register/ajax",
+        data: { MyPost:132456 },
+        success : function(data) {
+            if( data.status ) {
+
+            }
+            else {
+
+            }
+        }
+    });*/
+
+
+</script>
+
+</body>
+</html>
